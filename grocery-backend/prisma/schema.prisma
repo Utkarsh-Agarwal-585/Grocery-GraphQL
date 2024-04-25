@@ -1,0 +1,74 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+model User {
+  id String @id @default(uuid())
+  firstName String @map("first_name")
+  lastName String? @map("last_name")
+  role Role
+  profileImageURL String? @map("profile_image_url")
+  email String @unique
+  password String
+  salt String
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
+
+  @@map("users")
+}
+
+model Product {
+  id String @id @default(uuid())
+  name String
+  price Float
+  quantity Int
+  description String
+  imageURL String @map("image_url")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
+  products ProductOrder[]
+
+  @@map("products")
+}
+
+model Order {
+  id String @id @default(uuid())
+  userId String @map("user_id")
+  quantity Int
+  totalAmount Float @map("total_amount")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
+  products ProductOrder[]
+
+  @@map("orders")
+}
+
+model ProductOrder {
+  id String @id @default(uuid())
+  productID String @map("product_id")
+  orderID String @map("order_id")
+  quantity Int
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
+  order Order @relation(fields: [orderID], references: [id])
+  product Product @relation(fields: [productID], references: [id])
+
+  @@map("product_orders")
+}
+

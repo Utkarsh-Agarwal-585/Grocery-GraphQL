@@ -1,0 +1,14 @@
+#Exclude the build directory
+build/
+
+#Exclude the .git directory
+.git/
+
+#Exclude the node_modules directory
+node_modules/
+
+#Exclude the .env file
+.env
+
+#Exclude the migrations directory
+prisma/migrations/
