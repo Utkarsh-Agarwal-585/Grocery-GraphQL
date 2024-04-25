@@ -13,7 +13,7 @@ Clone the project
 Go to the project directory
 
 ```bash
-  cd qp-assessment
+  cd qp-assessment/grocery-backend
 ```
 
 Install dependencies and run the server
